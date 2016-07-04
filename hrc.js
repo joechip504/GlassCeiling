@@ -14,8 +14,7 @@ document.body.appendChild(renderer.view);
 //load an image and run the `setup` function when it's done
 loader
   .add(["images/HRCArrow.png",
-        "images/HRCFace.png"
-  ])
+        "images/HRCFace.png"])
   .load(setup);
 
 var time, face, arrows;
@@ -117,12 +116,13 @@ function spawnArrows() {
     var x = 0,
         y = 0;
 
-  for (i = 0; i < 5; i++) {
+  for (i = 0; i < randomInt(2,7); i++) {
       a = new Sprite(resources["images/HRCArrow.png"].texture);
       a.x = x; a.y = y; a.vx = 0; a.vy = 0;
       a.anchor.x = 0.5; a.anchor.y = 0.5;
-      a.scale.x = 0.5; a.scale.y = 0.5;
-      x += 150;
+      scale = 1/randomInt(1,3);
+      a.scale.x = scale; a.scale.y = scale;
+      x += randomInt(100, 300);
       arrows.push(a);
   }
 
@@ -131,3 +131,6 @@ function spawnArrows() {
   }
 }
 
+function randomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
