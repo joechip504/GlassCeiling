@@ -120,15 +120,16 @@ function play() {
 }
 
 function spawnArrows() {
-  // TODO remove old arrows
+  // TODO remove old arrows from the stage?
 
     var x = 0,
         y = 0;
 
-  for (i = 0; i < 4; i++) {
+  for (i = 0; i < 5; i++) {
       a = new Sprite(resources["images/HRCArrow.png"].texture);
       a.x = x; a.y = y; a.vx = 0; a.vy = 0;
       a.anchor.x = 0.5; a.anchor.y = 0.5;
+      a.scale.x = 0.5; a.scale.y = 0.5;
       x += 150;
       arrows.push(a);
   }
