@@ -17,7 +17,7 @@ loader
         "images/HRCFace.png"])
   .load(setup);
 
-var time, face, arrows;
+var time, face, arrows, faceSpeed;
 
 function setup() {
   face  = new Sprite(resources["images/HRCFace.png"].texture);
@@ -27,6 +27,7 @@ function setup() {
 
   arrows = [];
   time = 0;
+  faceSpeed = 2;
 
    var left = keyboard(37),
       up = keyboard(38),
@@ -96,14 +97,14 @@ function gameLoop() {
 
 function play() {
     time += 1;
-    face.x += face.vx; 
-    face.y += face.vy;
+    face.x += face.vx * faceSpeed; 
+    face.y += face.vy * faceSpeed;
 
     if (time % 60 == 0) {
         spawnArrows();
     }
 
-    for (i = 0; i < arrows.length; i++){
+    for (i = 0; i < arrows.length; i++) {
         arrows[i].rotation += arrows[i].rotationSpeed;
         arrows[i].vy -= .03;
         arrows[i].y -= arrows[i].vy;
@@ -120,8 +121,8 @@ function spawnArrows() {
       a = new Sprite(resources["images/HRCArrow.png"].texture);
       a.x = x; a.y = y; a.vx = 0; a.vy = 0;
       a.anchor.x = 0.5; a.anchor.y = 0.5;
-      a.rotationSpeed = 1/(5*randomInt(2,10));
-      scale = 1/randomInt(1,3);
+      a.rotationSpeed = 1 / (5*randomInt(2,10));
+      scale = 1 / randomInt(1,5);
       a.scale.x = scale; a.scale.y = scale;
       x += randomInt(100, 300);
       arrows.push(a);
