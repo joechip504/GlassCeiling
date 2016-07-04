@@ -104,7 +104,7 @@ function play() {
     }
 
     for (i = 0; i < arrows.length; i++){
-        arrows[i].rotation += 0.1;
+        arrows[i].rotation += arrows[i].rotationSpeed;
         arrows[i].vy -= .03;
         arrows[i].y -= arrows[i].vy;
     }
@@ -113,13 +113,14 @@ function play() {
 function spawnArrows() {
   // TODO remove old arrows from the stage?
 
-    var x = 0,
+    var x = 50,
         y = 0;
 
   for (i = 0; i < randomInt(2,7); i++) {
       a = new Sprite(resources["images/HRCArrow.png"].texture);
       a.x = x; a.y = y; a.vx = 0; a.vy = 0;
       a.anchor.x = 0.5; a.anchor.y = 0.5;
+      a.rotationSpeed = 1/(5*randomInt(2,10));
       scale = 1/randomInt(1,3);
       a.scale.x = scale; a.scale.y = scale;
       x += randomInt(100, 300);
