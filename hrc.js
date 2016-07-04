@@ -42,12 +42,8 @@ function setup() {
     face.vy = 0;
   };
 
-  //Left arrow key `release` method
+  //Left 
   left.release = function() {
-
-    //If the left arrow has been released, and the right arrow isn't down,
-    //and the face isn't moving vertically:
-    //Stop the face
     if (!right.isDown && face.vy === 0) {
       face.vx = 0;
     }
@@ -55,8 +51,7 @@ function setup() {
 
   //Up
   up.press = function() {
-    face.vy = -5;
-    face.vx = 0;
+    face.vy = -5; face.vx = 0;
   };
   up.release = function() {
     if (!down.isDown && face.vx === 0) {
@@ -66,8 +61,7 @@ function setup() {
 
   //Right
   right.press = function() {
-    face.vx = 5;
-    face.vy = 0;
+    face.vx = 5; face.vy = 0;
   };
   right.release = function() {
     if (!left.isDown && face.vy === 0) {
@@ -77,8 +71,7 @@ function setup() {
 
   //Down
   down.press = function() {
-    face.vy = 5;
-    face.vx = 0;
+    face.vy = 5; face.vx = 0;
   };
   down.release = function() {
     if (!up.isDown && face.vx === 0) {
@@ -96,7 +89,6 @@ function gameLoop() {
   //Loop this function at 60 frames per second
   requestAnimationFrame(gameLoop);
 
-  //Move the face 1 pixel to the right each frame
   state();
 
   //Render the stage to see the animation
@@ -138,39 +130,4 @@ function spawnArrows() {
       stage.addChild(arrows[i]); 
   }
 }
-function keyboard(keyCode) {
-  var key = {};
-  key.code = keyCode;
-  key.isDown = false;
-  key.isUp = true;
-  key.press = undefined;
-  key.release = undefined;
-  //The `downHandler`
-  key.downHandler = function(event) {
-    if (event.keyCode === key.code) {
-      if (key.isUp && key.press) key.press();
-      key.isDown = true;
-      key.isUp = false;
-    }
-    event.preventDefault();
-  };
 
-  //The `upHandler`
-  key.upHandler = function(event) {
-    if (event.keyCode === key.code) {
-      if (key.isDown && key.release) key.release();
-      key.isDown = false;
-      key.isUp = true;
-    }
-    event.preventDefault();
-  };
-
-  //Attach event listeners
-  window.addEventListener(
-    "keydown", key.downHandler.bind(key), false
-  );
-  window.addEventListener(
-    "keyup", key.upHandler.bind(key), false
-  );
-  return key;
-}
