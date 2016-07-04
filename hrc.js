@@ -18,31 +18,16 @@ loader
   ])
   .load(setup);
 
-var arrow, face, arrows;
+var time, face, arrows;
 
 function setup() {
   face  = new Sprite(resources["images/HRCFace.png"].texture);
   face.x = 250; face.y = 250;
   face.vx = 0; face.vy = 0;
   stage.addChild(face);
-  
-    arrows = [];
-    var x = 0,
-        y = 0;
 
-  for (i = 0; i < 4; i++) {
-      a = new Sprite(resources["images/HRCArrow.png"].texture);
-      a.x = x; a.y = y; a.vx = 0; a.vy = 0;
-      a.anchor.x = 0.5; a.anchor.y = 0.5;
-      x += 150; y += 150;
-      arrows.push(a);
-  }
-
-  for (i = 0; i < arrows.length; i++) {
-      stage.addChild(arrows[i]); 
-  }
-
- 
+  arrows = [];
+  time = 0;
 
    var left = keyboard(37),
       up = keyboard(38),
@@ -107,7 +92,7 @@ function setup() {
 var state = play;
 
 function gameLoop() {
-
+  
   //Loop this function at 60 frames per second
   requestAnimationFrame(gameLoop);
 
@@ -119,8 +104,13 @@ function gameLoop() {
 }
 
 function play() {
+    time += 1;
     face.x += face.vx; 
     face.y += face.vy;
+
+    if (time % 60 == 0) {
+        spawnArrows();
+    }
 
     for (i = 0; i < arrows.length; i++){
         arrows[i].rotation += 0.1;
@@ -129,6 +119,24 @@ function play() {
     }
 }
 
+function spawnArrows() {
+  // TODO remove old arrows
+
+    var x = 0,
+        y = 0;
+
+  for (i = 0; i < 4; i++) {
+      a = new Sprite(resources["images/HRCArrow.png"].texture);
+      a.x = x; a.y = y; a.vx = 0; a.vy = 0;
+      a.anchor.x = 0.5; a.anchor.y = 0.5;
+      x += 150;
+      arrows.push(a);
+  }
+
+  for (i = 0; i < arrows.length; i++) {
+      stage.addChild(arrows[i]); 
+  }
+}
 function keyboard(keyCode) {
   var key = {};
   key.code = keyCode;
