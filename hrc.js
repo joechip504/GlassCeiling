@@ -8,7 +8,7 @@ var Container = PIXI.Container,
 //Create a Pixi stage and renderer and add the 
 //renderer.view to the DOM
 var stage = new Container(),
-    renderer = autoDetectRenderer(800, 800);
+    renderer = autoDetectRenderer(1280, 720);
 document.body.appendChild(renderer.view);
 
 //load an image and run the `setup` function when it's done
@@ -98,7 +98,17 @@ function gameLoop() {
   renderer.render(stage);
 }
 
+function gameOver() {
+  return;
+}
+
 function play() {
+  
+    if (isGameOver()) {
+      state = gameOver;
+      return;
+    }
+    
     time += 1;
     face.x += face.vx * faceSpeed; 
     face.y += face.vy * faceSpeed;
@@ -112,36 +122,30 @@ function play() {
         arrows[i].vy -= .03;
         arrows[i].y -= arrows[i].vy;
     }
-
-    detectCollisions();
 }
 
-function detectCollisions() {
-  var collision = false;
+function isGameOver() {
   for (i = 0; i < arrows.length; i++) {
-    if (b.hit(arrows[i], face, true, true)) {
+    if (b.hit(arrows[i], face)) {
       console.log("collision");
-      collision = true;
+      return true;
     }
   }
-
-  return collision;
+  return false;
 }
+
 
 function spawnArrows() {
   // TODO remove old arrows from the stage?
 
-    var x = 50,
-        y = 0;
 
   for (i = 0; i < randomInt(2,7); i++) {
       a = new Sprite(resources["images/HRCArrow.png"].texture);
-      a.x = x; a.y = y; a.vx = 0; a.vy = 0;
-      a.anchor.x = 0.5; a.anchor.y = 0.5;
+      a.x = randomInt(renderer.width, 0); 
+      a.vx = 0; a.vy = 0; a.anchor.x = 0.5; a.anchor.y = 0.5;
       a.rotationSpeed = 1 / (5*randomInt(2,10));
       scale = 1 / randomInt(1,5);
       a.scale.x = scale; a.scale.y = scale;
-      x += randomInt(100, 300);
       arrows.push(a);
   }
 
