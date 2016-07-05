@@ -19,6 +19,9 @@ loader
 
 var time, face, arrows, faceSpeed, b;
 
+// Game states for when the ceiling breaks, actually playing the game, and game over
+var state = play;
+
 function setup() {
   face  = new Sprite(resources["images/HRCFace.png"].texture);
   face.x = 250; face.y = 250;
@@ -85,27 +88,23 @@ function setup() {
   gameLoop();
 }
 
-var state = play;
 
 function gameLoop() {
-  
-  //Loop this function at 60 frames per second
   requestAnimationFrame(gameLoop);
-
   state();
-
-  //Render the stage to see the animation
   renderer.render(stage);
 }
 
 function play() {
-  
+    // Check for a collision
     if (isGameOver()) {
       state = gameOver;
       return;
     }
     
     time += 1;
+    
+    // Update position of HRC face
     face.x += face.vx * faceSpeed; 
     face.y += face.vy * faceSpeed;
 
@@ -113,9 +112,10 @@ function play() {
         spawnArrows();
     }
 
+    // Spin/drop all the arrows
     for (i = 0; i < arrows.length; i++) {
         arrows[i].rotation += arrows[i].rotationSpeed;
-        arrows[i].vy -= .03;
+        arrows[i].vy -= 0.03;
         arrows[i].y -= arrows[i].vy;
     }
 }
@@ -123,7 +123,6 @@ function play() {
 function isGameOver() {
   for (i = 0; i < arrows.length; i++) {
     if (b.hit(arrows[i], face)) {
-      console.log("collision");
       return true;
     }
   }
@@ -134,11 +133,8 @@ function gameOver() {
   return;
 }
 
-
 function spawnArrows() {
   // TODO remove old arrows from the stage?
-
-
   for (i = 0; i < randomInt(2,7); i++) {
       a = new Sprite(resources["images/HRCArrow.png"].texture);
       a.x = randomInt(renderer.width, 0); 
