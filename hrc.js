@@ -17,13 +17,16 @@ loader
         "images/HRCFace.png"])
   .load(setup);
 
-var time, face, arrows, faceSpeed;
+var time, face, arrows, faceSpeed, b;
 
 function setup() {
   face  = new Sprite(resources["images/HRCFace.png"].texture);
   face.x = 250; face.y = 250;
   face.vx = 0; face.vy = 0;
   stage.addChild(face);
+
+  //Use bump.js for collision detection
+  b = new Bump(PIXI);
 
   arrows = [];
   time = 0;
@@ -116,20 +119,13 @@ function play() {
 function detectCollisions() {
   var collision = false;
   for (i = 0; i < arrows.length; i++) {
-    if (isIntersecting(arrows[i], face)) {
+    if (b.hit(arrows[i], face, true, true)) {
       console.log("collision");
       collision = true;
     }
   }
 
   return collision;
-}
-
-function isIntersecting(r1, r2) {
-  return !(r2.x > (r1.x + r1.width) ||
-             (r2.x + r2.width) < r1.x ||
-             r2.y > (r1.y + r1.height) ||
-             (r2.y + r2.height) < r1.y);
 }
 
 function spawnArrows() {
