@@ -8,7 +8,7 @@ var Container = PIXI.Container,
 //Create a Pixi stage and renderer and add the 
 //renderer.view to the DOM
 var stage = new Container(),
-    renderer = autoDetectRenderer(800, 800);
+    renderer = autoDetectRenderer(1280, 720);
 document.body.appendChild(renderer.view);
 
 //load an image and run the `setup` function when it's done
@@ -17,13 +17,19 @@ loader
         "images/HRCFace.png"])
   .load(setup);
 
-var time, face, arrows, faceSpeed;
+var time, face, arrows, faceSpeed, b;
+
+// Game states for when the ceiling breaks, actually playing the game, and game over
+var state = play;
 
 function setup() {
   face  = new Sprite(resources["images/HRCFace.png"].texture);
   face.x = 250; face.y = 250;
   face.vx = 0; face.vy = 0;
   stage.addChild(face);
+
+  //Use bump.js for collision detection
+  b = new Bump(PIXI);
 
   arrows = [];
   time = 0;
@@ -82,49 +88,60 @@ function setup() {
   gameLoop();
 }
 
-var state = play;
 
 function gameLoop() {
-  
-  //Loop this function at 60 frames per second
   requestAnimationFrame(gameLoop);
-
   state();
-
-  //Render the stage to see the animation
   renderer.render(stage);
 }
 
 function play() {
+    // Check for a collision
+    if (isGameOver()) {
+      state = gameOver;
+      return;
+    }
+    
     time += 1;
+    
+    // Update position of HRC face
     face.x += face.vx * faceSpeed; 
     face.y += face.vy * faceSpeed;
 
-    if (time % 60 == 0) {
+    if (time % 60 === 0) {
         spawnArrows();
     }
 
+    // Spin/drop all the arrows
     for (i = 0; i < arrows.length; i++) {
         arrows[i].rotation += arrows[i].rotationSpeed;
-        arrows[i].vy -= .03;
+        arrows[i].vy -= 0.03;
         arrows[i].y -= arrows[i].vy;
     }
 }
 
+function isGameOver() {
+  for (i = 0; i < arrows.length; i++) {
+    if (b.hit(arrows[i], face)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+function gameOver() {
+  return;
+}
+
 function spawnArrows() {
   // TODO remove old arrows from the stage?
-
-    var x = 50,
-        y = 0;
-
   for (i = 0; i < randomInt(2,7); i++) {
       a = new Sprite(resources["images/HRCArrow.png"].texture);
-      a.x = x; a.y = y; a.vx = 0; a.vy = 0;
-      a.anchor.x = 0.5; a.anchor.y = 0.5;
+      a.x = randomInt(renderer.width, 0); 
+      a.vx = 0; a.vy = 0; a.anchor.x = 0.5; a.anchor.y = 0.5;
       a.rotationSpeed = 1 / (5*randomInt(2,10));
       scale = 1 / randomInt(1,5);
       a.scale.x = scale; a.scale.y = scale;
-      x += randomInt(100, 300);
       arrows.push(a);
   }
 
