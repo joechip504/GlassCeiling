@@ -98,10 +98,6 @@ function gameLoop() {
   renderer.render(stage);
 }
 
-function gameOver() {
-  return;
-}
-
 function play() {
   
     if (isGameOver()) {
@@ -113,7 +109,7 @@ function play() {
     face.x += face.vx * faceSpeed; 
     face.y += face.vy * faceSpeed;
 
-    if (time % 60 == 0) {
+    if (time % 60 === 0) {
         spawnArrows();
     }
 
@@ -132,6 +128,10 @@ function isGameOver() {
     }
   }
   return false;
+}
+
+function gameOver() {
+  return;
 }
 
 
