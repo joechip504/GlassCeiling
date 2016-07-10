@@ -13,8 +13,8 @@ document.body.appendChild(renderer.view);
 
 //load an image and run the `setup` function when it's done
 loader
-  .add(["images/HRCArrow.png",
-        "images/HRCFace.png"])
+  .add(['images/HRCArrow.png',
+        'images/HRCFace.png'])
   .load(setup);
 
 var time, face, arrows, faceSpeed, b;
@@ -23,7 +23,7 @@ var time, face, arrows, faceSpeed, b;
 var state = play;
 
 function setup() {
-  face  = new Sprite(resources["images/HRCFace.png"].texture);
+  face  = new Sprite(resources['images/HRCFace.png'].texture);
   face.x = 250; face.y = 250;
   face.vx = 0; face.vy = 0;
   stage.addChild(face);
@@ -42,7 +42,6 @@ function setup() {
 
   //Left arrow key `press` method
   left.press = function() {
-
     //Change the face's velocity when the key is pressed
     face.vx = -5;
     face.vy = 0;
@@ -136,7 +135,7 @@ function gameOver() {
 function spawnArrows() {
   // TODO remove old arrows from the stage?
   for (i = 0; i < randomInt(2,7); i++) {
-      a = new Sprite(resources["images/HRCArrow.png"].texture);
+      a = new Sprite(resources['images/HRCArrow.png'].texture);
       a.x = randomInt(renderer.width, 0); 
       a.vx = 0; a.vy = 0; a.anchor.x = 0.5; a.anchor.y = 0.5;
       a.rotationSpeed = 1 / (5*randomInt(2,10));
