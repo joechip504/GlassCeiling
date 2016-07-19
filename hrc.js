@@ -4,9 +4,11 @@ var Container = PIXI.Container,
     loader = PIXI.loader,
     resources = PIXI.loader.resources,
     Sprite = PIXI.Sprite;
+    Text   = PIXI.Text;
 
 //Create a Pixi stage and renderer and add the 
 //renderer.view to the DOM
+// Add MAGA hats and emails
 var stage = new Container(),
     renderer = autoDetectRenderer(1280, 720);
 document.body.appendChild(renderer.view);
@@ -17,18 +19,28 @@ loader
         'images/HRCFace.png'])
   .load(setup);
 
-var time, face, arrows, faceSpeed, b;
+var time, face, arrows, faceSpeed, b, scoreText;
 
 // Game states for when the ceiling breaks, actually playing the game, and game over
 var state = play;
 
 function setup() {
+  // Add HRC face
   face  = new Sprite(resources['images/HRCFace.png'].texture);
   face.x = 250; face.y = 250;
   face.vx = 0; face.vy = 0;
   stage.addChild(face);
 
-  //Use bump.js for collision detection
+  // Add Score
+  
+  var style = {
+    fill: "white",
+  }
+  scoreText = new PIXI.Text(0, style);
+  scoreText.x = 30; scoreText.y = 90;
+  stage.addChild(scoreText);
+
+  // Use bump.js for collision detection
   b = new Bump(PIXI);
 
   arrows = [];
@@ -101,7 +113,9 @@ function play() {
       return;
     }
     
+    // Update score
     time += 1;
+    scoreText.text = time;
     
     // Update position of HRC face
     face.x += face.vx * faceSpeed; 
