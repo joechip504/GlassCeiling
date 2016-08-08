@@ -16,10 +16,11 @@ document.body.appendChild(renderer.view);
 //load an image and run the `setup` function when it's done
 loader
   .add(['images/HRCArrow.png',
-        'images/HRCFace.png'])
+        'images/HRCFace.png',
+        'images/HRCSad.jpg'])
   .load(setup);
 
-var time, face, arrows, faceSpeed, b, scoreText;
+var time, face, arrows, faceSpeed, b, scoreText, soundtrack;
 
 // Game states for when the ceiling breaks, actually playing the game, and game over
 var state = play;
@@ -96,6 +97,7 @@ function setup() {
     }
   };
 
+  
   gameLoop();
 }
 
@@ -106,7 +108,16 @@ function gameLoop() {
   renderer.render(stage);
 }
 
+function start() {
+  return;
+}
+
 function play() {
+    if (!soundtrack || soundtrack.paused) {
+    soundtrack = new Audio('audio/8bit_star_spangled_banner.mp3');
+    soundtrack.play();
+    }
+
     // Check for a collision
     if (isGameOver()) {
       state = gameOver;
@@ -136,6 +147,9 @@ function play() {
 function isGameOver() {
   for (i = 0; i < arrows.length; i++) {
     if (b.hit(arrows[i], face)) {
+      soundtrack.pause();
+      face = new Sprite(resources['images/HRCSad.jpg'].texture);
+      stage.addChild(face);
       return true;
     }
   }
@@ -143,6 +157,11 @@ function isGameOver() {
 }
 
 function gameOver() {
+  if (!soundtrack || soundtrack.paused) {
+    soundtrack = new Audio('audio/8bit_soviet_anthem.mp3');
+    soundtrack.play();
+  }
+  
   return;
 }
 
