@@ -16,7 +16,8 @@ document.body.appendChild(renderer.view);
 //load an image and run the `setup` function when it's done
 loader
   .add(['images/HRCArrow.png',
-        'images/HRCFace.png'])
+        'images/HRCFace.png',
+        'images/HRCSad.jpg'])
   .load(setup);
 
 var time, face, arrows, faceSpeed, b, scoreText, soundtrack;
@@ -147,6 +148,8 @@ function isGameOver() {
   for (i = 0; i < arrows.length; i++) {
     if (b.hit(arrows[i], face)) {
       soundtrack.pause();
+      face = new Sprite(resources['images/HRCSad.jpg'].texture);
+      stage.addChild(face);
       return true;
     }
   }
